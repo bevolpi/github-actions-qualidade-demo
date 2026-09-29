@@ -1,0 +1,36 @@
+name: Qualidade do app de pedidos
+
+# EVENTO: o workflow começa quando alguém envia código ou abre uma PR.
+on:
+  push:
+  pull_request:
+  workflow_dispatch: # também permite iniciar manualmente
+
+# JOBS: damos somente leitura ao token do GitHub.
+permissions:
+  contents: read
+
+jobs:
+  testar-pedidos:
+    # RUNNER: uma máquina Ubuntu limpa disponibilizada pelo GitHub.
+    runs-on: ubuntu-latest
+
+    steps:
+      # STEP + ACTION: checkout é uma Action pronta que baixa o código.
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      # STEP + ACTION: prepara o Python no runner.
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # STEP + COMANDO: instala o framework de testes.
+      - name: Instalar dependências
+        run: python -m pip install pytest
+
+      # STEP + COMANDO: executa os testes do app.
+      # Se um teste falhar, o JOB fica vermelho e a PR recebe feedback.
+      - name: Testar regras de pedidos
+        run: pytest -q
