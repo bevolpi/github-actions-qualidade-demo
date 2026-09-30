@@ -25,7 +25,7 @@ def criar_pedido(produto: str, quantidade: int, preco_unitario: float) -> Pedido
 
 def calcular_frete(pedido: Pedido) -> float:
     """Frete grátis para pedidos a partir de R$ 100; caso contrário, R$ 15."""
-     return 15.0
+     return 0.0 if pedido.total() >= 100 else 15.0
 
 
 def resumo_pedido(pedido: Pedido) -> str:
